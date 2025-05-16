@@ -16,6 +16,11 @@
     "prettier": "prettier --write .",
     "build": "npm run tsc"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/oseelabs/lueur-cli"
+  },
+  "homepage": "https://github.com/oseelabs/lueur-cli#README.md",
   "keywords": [],
   "author": "",
   "license": "ISC",

@@ -8,7 +8,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    # environment: GITHUB_NODE_AUTH_TOKEN
+    environment: GITHUB_NODE_AUTH_TOKEN
     permissions:
       contents: read
       packages: write
@@ -24,4 +24,4 @@ jobs:
       - run: npm ci
       - run: npm publish
         env:
-          NODE_AUTH_TOKEN: ${{ github.token }}
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_NPM_AUTH_TOKEN }}

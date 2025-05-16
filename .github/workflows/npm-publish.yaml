@@ -1,10 +1,11 @@
 name: Publish Package to npmjs
 on:
   release:
-    types: [published]
-    push:
-      branches:
-        - main
+    types: [created]
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -20,6 +21,8 @@ jobs:
           node-version: '20.x'
           registry-url: 'https://registry.npmjs.org'
       - run: npm ci
+      - run: git config --global user.email "odiraoseelazaro@students.tukenya.ac.ke"
+      - run: git config --global user.name "oseelabs"
       - run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.LUEUR_NPM_PUBLISH }}

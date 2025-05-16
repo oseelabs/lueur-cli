@@ -1,10 +1,11 @@
 name: Publish package to GitHub Packages
 on:
   release:
-    types: [published]
+    types: [created]
   push:
-    branches:
-      - main
+    branches: [main]
+  pull_request:
+    branches: [main]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -22,6 +23,8 @@ jobs:
           # Defaults to the user or organization that owns the workflow file
           scope: '@lueur'
       - run: npm ci
+      - run: git config --global user.email "odiraoseelazaro@students.tukenya.ac.ke"
+      - run: git config --global user.name "oseelabs"
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_NPM_AUTH_TOKEN }}

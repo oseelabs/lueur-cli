@@ -4,7 +4,7 @@
   "main": "index.js",
   "type": "module",
   "bin": {
-    "lueur": "./bin/index.js"
+    "lueur": "bin/index.js"
   },
   "files": [
     "bin",

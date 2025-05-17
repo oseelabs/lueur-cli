@@ -1,6 +1,6 @@
 {
   "name": "@lueur/cli",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "main": "index.js",
   "type": "module",
   "bin": {
@@ -27,7 +27,8 @@
   },
   "homepage": "https://github.com/oseelabs/lueur-cli#readme",
   "keywords": [
-    "lueur", ""
+    "lueur",
+    ""
   ],
   "author": "Lazaro Osee <info.stingerdevelopers@gmail.com>",
   "license": "MIT",

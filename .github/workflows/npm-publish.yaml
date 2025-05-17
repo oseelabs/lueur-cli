@@ -26,3 +26,4 @@ jobs:
       - run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.LUEUR_NPM_PUBLISH }}
+          NPM_CONFIG_REGISTRY: 'https://registry.npmjs.org'

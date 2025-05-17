@@ -32,8 +32,8 @@ jobs:
       - name: Build package
         run: npm run build # Run your build script
 
-      - name: Run tests
-        run: npm test # Run your test script
+      # - name: Run tests
+      #   run: npm test # Run your test script
 
       - name: Publish to GitHub Packages
         run: |

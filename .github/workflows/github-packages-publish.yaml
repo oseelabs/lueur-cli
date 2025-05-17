@@ -1,30 +1,71 @@
-name: Publish package to GitHub Packages
+name: Publish Package to GitHub Packages
+
 on:
   release:
-    types: [created]
+    types: [created] # Typically publish new versions on release
+  # You might remove push/pull_request triggers if you only want to publish on release
   push:
     branches: [main]
   pull_request:
     branches: [main]
+
 jobs:
-  build:
+  build-and-publish-gpr: # Renamed job for clarity
     runs-on: ubuntu-latest
-    environment: GITHUB_NODE_AUTH_TOKEN
+
     permissions:
       contents: read
-      packages: write
+      packages: write # Grant write permissions for publishing to GitHub Packages
+
     steps:
-      - uses: actions/checkout@v4
-      # Setup .npmrc file to publish to GitHub Packages
-      - uses: actions/setup-node@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: '20.x'
-          registry-url: 'https://npm.pkg.github.com'
-          # Defaults to the user or organization that owns the workflow file
-          scope: '@lueur'
-      - run: npm ci
-      - run: git config --global user.email "odiraoseelazaro@students.tukenya.ac.ke"
-      - run: git config --global user.name "oseelabs"
-      - run: npm publish
+          node-version: 'lts/*'
+          # REMOVE registry and token config from here
+          # They will be set as environment variables for the publish step
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build package # Make sure this is necessary for your package
+        run: npm run build
+
+      # - name: Run tests # Uncomment if you want tests before publishing
+      #   run: npm test
+
+      # --- FIX: Temporarily modify package.json for GitHub Packages ---
+      - name: Prepare package.json for GitHub Packages
+        run: |
+          # Read the current package.json
+          PKG_NAME=$(node -p "require('./package.json').name")
+          PKG_VERSION=$(node -p "require('./package.json').version")
+          REPO_OWNER=$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]') # Get repo owner in lowercase
+          NEW_PKG_NAME="@${REPO_OWNER}/$(basename $PKG_NAME)" # Construct new name @owner/package-name
+
+          echo "Original package name: ${PKG_NAME}"
+          echo "New package name for GPR: ${NEW_PKG_NAME}"
+
+          # Use jq to update the name field in package.json
+          # jq needs to be installed on the runner, often available by default
+          # If not, add a step: - name: Install jq / run: sudo apt-get update && sudo apt-get install -y jq
+          jq --indent 2 ".name = \"${NEW_PKG_NAME}\"" package.json > package.json.tmp && mv package.json.tmp package.json
+
+          echo "Modified package.json name to: ${NEW_PKG_NAME}"
+
+      - name: Verify modified package.json
+        run: cat package.json # Optional: print package.json to log to verify change
+
+      # --- Publish to GitHub Packages using the modified package name ---
+      - name: Publish to GitHub Packages
+        run: |
+          npm publish --registry https://npm.pkg.github.com/ # Explicitly set registry here
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.LUEUR_NODE_AUTH_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Use the GITHUB_TOKEN
+
+      # Note: You don't need to restore package.json after publish in this workflow
+      # because the changes are only made in the runner environment for this job run.
+      # The original file in your repository is not affected.

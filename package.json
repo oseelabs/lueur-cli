@@ -19,12 +19,18 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/oseelabs/lueur-cli.git"
+    "url": "git+https://github.com/oseelabs/lueur-cli.git"
   },
-  "homepage": "https://github.com/oseelabs/lueur-cli#README.md",
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "bugs": {
+    "email": "info.stingerdevelopers@gmail.com",
+    "url": "https://github.com/oseelabs/lueur-cli/issues"
+  },
+  "homepage": "https://github.com/oseelabs/lueur-cli#readme",
+  "keywords": [
+    "lueur", ""
+  ],
+  "author": "Lazaro Osee <info.stingerdevelopers@gmail.com>",
+  "license": "MIT",
   "description": "",
   "dependencies": {
     "chalk": "^5.4.1",

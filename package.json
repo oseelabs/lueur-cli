@@ -1,6 +1,6 @@
 {
   "name": "@lueur/cli",
-  "version": "0.0.16-0",
+  "version": "0.0.16-1",
   "main": "index.js",
   "type": "module",
   "bin": {
@@ -32,7 +32,7 @@
   ],
   "author": "Lazaro Osee <info.stingerdevelopers@gmail.com>",
   "license": "MIT",
-  "description": "",
+  "description": "A CLI to manage and enhance working with packages created by the Lueur Software Organization",
   "dependencies": {
     "chalk": "^5.4.1",
     "commander": "^13.1.0",
